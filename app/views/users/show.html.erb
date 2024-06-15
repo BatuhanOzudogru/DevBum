@@ -7,7 +7,16 @@
   <li><strong>Web Sitesi:</strong> <%= @user.website %></li>
 </ul>
 
-<h2 class="text-lg font-semibold mt-6 mb-2">Albümler</h2>
+<% if @address %>
+  <h2 class="text-lg font-semibold mt-6 mb-2">Adres Bilgileri</h2>
+  <ul class="mb-4">
+    <li><strong>Cadde/Sokak:</strong> <%= @user.address.street %></li>
+    <li><strong>Şehir:</strong> <%= @user.address.city %></li>
+    <li><strong>Posta Kodu:</strong> <%= @user.address.zipcode %></li>
+  </ul>
+<% end %>
+
+<h2 class="text-lg font-semibold mb-2">Albümler</h2>
 <ul class="space-y-2">
   <% @albums.each do |album| %>
     <li>
@@ -16,12 +25,10 @@
   <% end %>
 </ul>
 
-<!-- Modal Penceresi -->
 <div id="albumModal" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
     <div id="album-details">
-      <!-- Albüm detayları buraya yüklenecek -->
     </div>
   </div>
 </div>

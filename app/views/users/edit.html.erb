@@ -33,8 +33,7 @@
     <%= f.text_field :website %>
   </div>
 
-  <!-- Adres Bilgileri -->
-  <%= f.fields_for :addresses, @user.addresses.build do |address_fields| %>
+  <%= f.fields_for :address, @user.address || @user.build_address do |address_fields| %>
     <div class="field">
       <%= address_fields.label :street, 'Cadde/Sokak:' %>
       <%= address_fields.text_field :street %>
@@ -44,11 +43,9 @@
       <%= address_fields.text_field :city %>
     </div>
     <div class="field">
-      <%= address_fields.label :country, 'Ülke:' %>
-      <%= address_fields.text_field :country %>
-    </div>
+      <%= address_fields.label :zipcode, 'Posta Kodu:' %>
+      <%= address_fields.text_field :zipcode %>
   <% end %>
-
   <div class="actions">
     <%= f.submit 'Güncelle', class: 'btn btn-primary' %>
   </div>
