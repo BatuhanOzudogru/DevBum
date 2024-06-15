@@ -1,0 +1,57 @@
+<h1>Kullanıcıyı Düzenle</h1>
+
+<%= form_for @user, url: user_path(@user), method: :put do |f| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "hata") %> formda var:</h2>
+      <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name, 'İsim:' %>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :username, 'Kullanıcı Adı:' %>
+    <%= f.text_field :username %>
+  </div>
+  <div class="field">
+    <%= f.label :email, 'E-posta:' %>
+    <%= f.text_field :email %>
+  </div>
+  <div class="field">
+    <%= f.label :phone, 'Telefon:' %>
+    <%= f.text_field :phone %>
+  </div>
+  <div class="field">
+    <%= f.label :website, 'Web Sitesi:' %>
+    <%= f.text_field :website %>
+  </div>
+
+  <!-- Adres Bilgileri -->
+  <%= f.fields_for :addresses, @user.addresses.build do |address_fields| %>
+    <div class="field">
+      <%= address_fields.label :street, 'Cadde/Sokak:' %>
+      <%= address_fields.text_field :street %>
+    </div>
+    <div class="field">
+      <%= address_fields.label :city, 'Şehir:' %>
+      <%= address_fields.text_field :city %>
+    </div>
+    <div class="field">
+      <%= address_fields.label :country, 'Ülke:' %>
+      <%= address_fields.text_field :country %>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit 'Güncelle', class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
+<%= link_to 'Geri dön', user_path(@user), class: 'btn btn-secondary' %>
