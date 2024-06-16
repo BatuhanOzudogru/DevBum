@@ -20,11 +20,11 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-
     if @user.save
-      render json: @user, status: :created, location: @user
+      redirect_to users_path, notice: 'Kullanıcı başarıyla oluşturuldu.'
     else
-      render json: @user.errors, status: :unprocessable_entity
+      flash.now[:alert] = @user.errors.full_messages.join(', ')
+      render :new
     end
   end
 

@@ -9,28 +9,27 @@
   <p class="text-red-500"><%= flash[:alert] %></p>
 <% end %>
 
-
 <div class="user-list flex flex-wrap gap-5 flex-col items-center space-y-4">
   <% @users.each do |user| %>
-    <div class="user flex flex-row justify-between items-center p-4 bg-gray-200 border border-gray-300 rounded-lg w-80 cursor-pointer" data-user-id="<%= user['id'] %>">
-      <a href="<%= user_path(user['id']) %>" class="user-link flex flex-row items-center">
+    <div class="user flex flex-row justify-between items-center p-4 bg-gray-200 border border-gray-300 rounded-lg w-80 cursor-pointer" data-user-id="<%= user.id %>">
+      <a href="<%= user_path(user) %>" class="user-link flex flex-row items-center">
         <div class="user-photo mb-4">
-          <% if user['id'].present? %>
-            <% photo_response = HTTParty.get("https://picsum.photos/id/#{user['id']}/info") %>
+          <% if user.id.present? %>
+            <% photo_response = HTTParty.get("https://picsum.photos/id/#{user.id}/info") %>
             <% if photo_response.code == 200 %>
               <% photo_data = JSON.parse(photo_response.body) %>
-              <img src="<%= photo_data['download_url'] %>" alt="<%= user['name'] %>" class="w-24 h-24 object-cover rounded-full border-2 border-gray-300">
+              <img src="<%= photo_data['download_url'] %>" alt="<%= user.name %>" class="w-24 h-24 object-cover rounded-full border-2 border-gray-300">
             <% else %>
               <p>Fotoğraf yüklenemedi.</p>
             <% end %>
           <% end %>
         </div>
         <div class="user-details text-center mb-4">
-          <h3 class="text-xl font-semibold"><%= user['name'] %></h3>
-          <p class="text-gray-600"><%= user['username'] %></p>
+          <h3 class="text-xl font-semibold"><%= user.name %></h3>
+          <p class="text-gray-600"><%= user.username %></p>
         </div>
-        <div class="user-actions">
-          <%= link_to edit_user_path(user['id']), class: 'btn btn-primary' do %>
+        <div class="user-actions space-x-2">
+          <%= link_to edit_user_path(user), class: 'btn btn-primary' do %>
             <i class="fa fa-edit"></i>
           <% end %>
         </div>
@@ -39,6 +38,55 @@
   <% end %>
 </div>
 
+<h2 class="text-2xl font-bold mb-4 mt-6">Yeni Kullanıcı Ekle</h2>
+<%= form_for User.new, url: users_path, method: :post, class: "space-y-4" do |f| %>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="field">
+      <%= f.label :name, 'İsim:', class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_field :name, class: "mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+    </div>
+    <div class="field">
+      <%= f.label :username, 'Kullanıcı Adı:', class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_field :username, class: "mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+    </div>
+    <div class="field">
+      <%= f.label :email, 'E-posta:', class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_field :email, class: "mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+    </div>
+    <div class="field">
+      <%= f.label :phone, 'Telefon:', class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_field :phone, class: "mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+    </div>
+    <div class="field">
+      <%= f.label :website, 'Web Sitesi:', class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_field :website, class: "mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+    </div>
+  </div>
+
+  <%= f.fields_for :address, Address.new do |address_fields| %>
+    <div class="mt-4">
+      <h2 class="text-lg font-semibold mb-2">Adres Bilgileri</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="field">
+          <%= address_fields.label :street, 'Cadde/Sokak:', class: "block text-sm font-medium text-gray-700" %>
+          <%= address_fields.text_field :street, class: "mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+        </div>
+        <div class="field">
+          <%= address_fields.label :city, 'Şehir:', class: "block text-sm font-medium text-gray-700" %>
+          <%= address_fields.text_field :city, class: "mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+        </div>
+        <div class="field">
+          <%= address_fields.label :zipcode, 'Posta Kodu:', class: "block text-sm font-medium text-gray-700" %>
+          <%= address_fields.text_field :zipcode, class: "mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="actions mt-6">
+    <%= f.submit 'Ekle', class: 'bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600' %>
+  </div>
+<% end %>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -95,5 +143,4 @@ document.addEventListener('DOMContentLoaded', function() {
     userNotFoundMessage.style.display = 'none';
   });
 });
-
 </script>
