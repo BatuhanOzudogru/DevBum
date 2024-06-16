@@ -25,19 +25,21 @@
   <div class="w-2/3 pl-8">
     <h2 class="text-lg font-semibold mb-2">Albümler</h2>
     <ul class="space-y-2">
-      <% @albums.each do |album| %>
-        <li>
-          <img src="<%= album['thumbnailUrl'] %>" alt="<%= album['title'] %>" class="w-16 h-16 rounded-full inline-block">
-          <a href="#" class="album-link text-blue-500 hover:underline" data-album-id="<%= album['id'] %>"><%= album['title'] %></a>
-        </li>
-      <% end %>
-    </ul>
+    <% @albums.each do |album| %>
+      <% photo_response = HTTParty.get("https://jsonplaceholder.typicode.com/photos/#{album['id']}") %>
+      <% photo_data = JSON.parse(photo_response.body) %>
+      <li class="flex items-center space-x-4">
+        <img src="<%= photo_data['thumbnailUrl'] %>" alt="<%= album['title'] %>" class="w-16 h-16 rounded-full">
+        <a href="#" class="album-link text-blue-500 hover:underline" data-album-id="<%= album['id'] %>"><%= album['title'] %></a>
+      </li>
+    <% end %>
+  </ul>
   </div>
 </div>
 
 <div id="albumModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75 hidden">
   <div class="modal-content bg-white w-4/5 md:max-w-md mx-auto rounded shadow-lg p-8">
-    <span class="close absolute top-0 right-0 m-4 text-3xl cursor-pointer"></span>
+    <span class="close absolute top-0 right-0 m-4 text-3xl cursor-pointer">&times;</span>
     <div id="album-details">
     </div>
   </div>
@@ -67,6 +69,7 @@
               `;
             }
             modal.classList.remove('hidden'); 
+          })
           .catch(error => {
             console.error('Error:', error);
             document.getElementById('album-details').innerHTML = '<p>Bir hata oluştu.</p>';
