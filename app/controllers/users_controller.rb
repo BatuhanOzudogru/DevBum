@@ -14,14 +14,14 @@ class UsersController < ApplicationController
     @albums = fetch_albums(params[:id])
     @address = @user.address
     unless @albums
-      flash.now[:alert] = 'Kullanıcıya ait albümler bulunamadı.'
+      flash.now[:alert] = I18n.t('users.show.albums_not_found')    
     end
   end
 
   def create
     @user = User.new(user_params)
     if @user.save
-      redirect_to users_path, notice: 'Kullanıcı başarıyla oluşturuldu.'
+      redirect_to users_path, notice: I18n.t('users.create.success')
     else
       flash.now[:alert] = @user.errors.full_messages.join(', ')
       render :new
@@ -30,7 +30,7 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
-      redirect_to @user, notice: 'Kullanıcı başarıyla güncellendi.'
+      redirect_to @user, notice: I18n.t('users.update.success')
     else
       render json: @user.errors, status: :unprocessable_entity
     end
@@ -40,7 +40,7 @@ class UsersController < ApplicationController
     if params[:query].present?
       @users = User.where('username LIKE ?', "%#{params[:query]}%")
       if @users.empty?
-        flash.now[:alert] = 'Kullanıcı Bulunamadı!'
+        flash.now[:alert] = I18n.t('users.search.not_found')
       end
     else
       @users = User.all

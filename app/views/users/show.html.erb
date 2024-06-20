@@ -6,24 +6,24 @@
       <% photo_response = HTTParty.get("https://picsum.photos/id/#{@user.id}/info") %>
       <% photo_data = JSON.parse(photo_response.body) %>
       <img src="<%= photo_data['download_url'] %>" alt="<%= @user.name %>" class="w-32 h-32 rounded-full mb-4">     
-      <li><strong>Kullanıcı Adı:</strong> <%= @user.username %></li>
-      <li><strong>E-posta:</strong> <%= @user.email %></li>
-      <li><strong>Telefon:</strong> <%= @user.phone %></li>
-      <li><strong>Web Sitesi:</strong> <%= @user.website %></li>
+      <li><strong><%= t('labels.username') %>:</strong> <%= @user.username %></li>
+      <li><strong><%= t('labels.email') %>:</strong> <%= @user.email %></li>
+      <li><strong><%= t('labels.phone') %>:</strong> <%= @user.phone %></li>
+      <li><strong><%= t('labels.website') %>:</strong> <%= @user.website %></li>
     </ul>
 
     <% if @user.address %>
-      <h2 class="text-lg font-semibold mt-6 mb-2">Adres Bilgileri</h2>
+      <h2 class="text-lg font-semibold mt-6 mb-2"><%= t('headings.address_info') %></h2>
       <ul class="mb-4">
-        <li><strong>Cadde/Sokak:</strong> <%= @user.address.street %></li>
-        <li><strong>Şehir:</strong> <%= @user.address.city %></li>
-        <li><strong>Posta Kodu:</strong> <%= @user.address.zipcode %></li>
+        <li><strong><%= t('labels.street') %>:</strong> <%= @user.address.street %></li>
+        <li><strong><%= t('labels.city') %>:</strong> <%= @user.address.city %></li>
+        <li><strong><%= t('labels.zipcode') %>:</strong> <%= @user.address.zipcode %></li>
       </ul>
     <% end %>
   </div>
 
   <div class="w-2/3 pl-8">
-    <h2 class="text-lg font-semibold mb-2">Albümler</h2>
+    <h2 class="text-lg font-semibold mb-2"><%= t('headings.albums') %></h2>
     <ul class="space-y-2">
     <% @albums.each do |album| %>
       <% photo_response = HTTParty.get("https://jsonplaceholder.typicode.com/photos/#{album['id']}") %>
@@ -33,7 +33,7 @@
         <a href="#" class="album-link text-blue-500 hover:underline" data-album-id="<%= album['id'] %>"><%= album['title'] %></a>
       </li>
     <% end %>
-  </ul>
+    </ul>
   </div>
 </div>
 
@@ -63,8 +63,8 @@
             } else {
               document.getElementById('album-details').innerHTML = `
                 <h3 class="text-xl font-semibold mb-2">${data.title}</h3>
-                <p><strong>Album ID:</strong> ${data.id}</p>
-                <p><strong>URL:</strong> <a href="${data.url}" target="_blank" class="text-blue-500">${data.url}</a></p>
+                <p><strong>${t('labels.album_id')}:</strong> ${data.id}</p>
+                <p><strong>${t('labels.url')}:</strong> <a href="${data.url}" target="_blank" class="text-blue-500">${data.url}</a></p>
                 <img src="${data.thumbnailUrl}" alt="${data.title}" class="mt-2">
               `;
             }
@@ -72,7 +72,7 @@
           })
           .catch(error => {
             console.error('Error:', error);
-            document.getElementById('album-details').innerHTML = '<p>Bir hata oluştu.</p>';
+            document.getElementById('album-details').innerHTML = '<p>${t('messages.error_occurred')}</p>';
             modal.classList.remove('hidden'); 
           });
       });

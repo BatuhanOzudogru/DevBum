@@ -67,4 +67,5 @@ group :test do
 end
 gem 'httparty'
 gem 'tailwindcss-rails'
+gem 'turbo-rails'
 

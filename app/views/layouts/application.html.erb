@@ -1,25 +1,32 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>DevBum</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<head>
+  <title>DevBum</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <%= javascript_importmap_tags %>
-  </head>
+  <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <%= javascript_importmap_tags %>
+  <%= javascript_include_tag "turbo", type: "module" %>
+</head>
 
-  <body>
+<body>
   <nav class="bg-red-800 p-4 shadow-md">
     <div class="container mx-auto flex items-center justify-center">
       <a href="/" class="text-2xl font-semibold text-center">
-        <span class="text-white">         DEV</span><span class="text-black">eloper</span><br><span class="text-black">al</span><span class="text-white">BUM</span>
+        <span class="text-white">DEV</span><span class="text-black">eloper</span><br>
+        <span class="text-black">al</span><span class="text-white">BUM</span>
       </a>
     </div>
+    <div class="text-white space-x-2">
+      <%= link_to 'TR', url_for(locale: 'tr'), class: "hover:underline" %> | 
+      <%= link_to 'EN', url_for(locale: 'en'), class: "hover:underline" %>
+    </div>
   </nav>
-    <%= yield %>
-  </body>
+
+  <%= yield %>
+</body>
 </html>

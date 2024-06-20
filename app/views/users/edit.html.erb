@@ -1,9 +1,9 @@
-<h1 class="text-2xl font-bold mb-4">Kullanıcıyı Düzenle</h1>
+<h1 class="text-2xl font-bold mb-4"><%= t('headings.edit_user') %></h1>
 
 <%= form_for @user, url: user_path(@user), method: :put, class: "space-y-4" do |f| %>
   <% if @user.errors.any? %>
     <div id="error_explanation" class="bg-red-100 text-red-700 p-4 rounded mb-4">
-      <h2 class="text-lg font-semibold mb-2"><%= pluralize(@user.errors.count, "hata") %> formda var:</h2>
+      <h2 class="text-lg font-semibold mb-2"><%= pluralize(@user.errors.count, t('labels.error')) %> formda var:</h2>
       <ul class="list-disc list-inside">
         <% @user.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -14,41 +14,41 @@
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <div class="field">
-      <%= f.label :name, 'İsim:', class: "block text-sm font-medium text-gray-700" %>
+      <%= f.label :name, t('labels.name'), class: "block text-sm font-medium text-gray-700" %>
       <%= f.text_field :name, class: "mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
     </div>
     <div class="field">
-      <%= f.label :username, 'Kullanıcı Adı:', class: "block text-sm font-medium text-gray-700" %>
+      <%= f.label :username, t('labels.username'), class: "block text-sm font-medium text-gray-700" %>
       <%= f.text_field :username, class: "mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
     </div>
     <div class="field">
-      <%= f.label :email, 'E-posta:', class: "block text-sm font-medium text-gray-700" %>
+      <%= f.label :email, t('labels.email'), class: "block text-sm font-medium text-gray-700" %>
       <%= f.text_field :email, class: "mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
     </div>
     <div class="field">
-      <%= f.label :phone, 'Telefon:', class: "block text-sm font-medium text-gray-700" %>
+      <%= f.label :phone, t('labels.phone'), class: "block text-sm font-medium text-gray-700" %>
       <%= f.text_field :phone, class: "mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
     </div>
     <div class="field">
-      <%= f.label :website, 'Web Sitesi:', class: "block text-sm font-medium text-gray-700" %>
+      <%= f.label :website, t('labels.website'), class: "block text-sm font-medium text-gray-700" %>
       <%= f.text_field :website, class: "mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
     </div>
   </div>
 
   <%= f.fields_for :address, @user.address || @user.build_address do |address_fields| %>
     <div class="mt-4">
-      <h2 class="text-lg font-semibold mb-2">Adres Bilgileri</h2>
+      <h2 class="text-lg font-semibold mb-2"><%= t('headings.address_info') %></h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="field">
-          <%= address_fields.label :street, 'Cadde/Sokak:', class: "block text-sm font-medium text-gray-700" %>
+          <%= address_fields.label :street, t('labels.street'), class: "block text-sm font-medium text-gray-700" %>
           <%= address_fields.text_field :street, class: "mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
         </div>
         <div class="field">
-          <%= address_fields.label :city, 'Şehir:', class: "block text-sm font-medium text-gray-700" %>
+          <%= address_fields.label :city, t('labels.city'), class: "block text-sm font-medium text-gray-700" %>
           <%= address_fields.text_field :city, class: "mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
         </div>
         <div class="field">
-          <%= address_fields.label :zipcode, 'Posta Kodu:', class: "block text-sm font-medium text-gray-700" %>
+          <%= address_fields.label :zipcode, t('labels.zipcode'), class: "block text-sm font-medium text-gray-700" %>
           <%= address_fields.text_field :zipcode, class: "mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" %>
         </div>
       </div>
@@ -56,8 +56,8 @@
   <% end %>
   
   <div class="actions mt-6">
-    <%= f.submit 'Güncelle', class: 'bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600' %>
+    <%= f.submit t('buttons.update'), class: 'bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600' %>
   </div>
 <% end %>
 
-<%= link_to 'Ana Sayfaya Dön', root_path, class: 'bg-gray-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-gray-600 mt-4 inline-block' %>
+<%= link_to t('buttons.back_to_home'), root_path, class: 'bg-gray-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-gray-600 mt-4 inline-block' %>

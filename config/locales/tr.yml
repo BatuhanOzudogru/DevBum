@@ -1,0 +1,28 @@
+tr:
+  labels:
+    username: "Kullanıcı Adı"
+    email: "E-posta"
+    phone: "Telefon"
+    website: "Web Sitesi"
+    street: "Cadde/Sokak"
+    city: "Şehir"
+    zipcode: "Posta Kodu"
+    name: "İsim"
+    album_id: "Albüm ID"
+    url: "URL"
+    error: "hata"
+    photo_not_loaded: "Fotoğraf yüklenemedi"
+  headings:
+    address_info: "Adres Bilgileri"
+    albums: "Albümler"
+    edit_user: "Kullanıcıyı Düzenle"
+    add_new_user: "Yeni Kullanıcı Ekle"
+  buttons:
+    update: "Güncelle"
+    back_to_home: "Ana Sayfaya Dön"
+    add: "Ekle"
+  messages:
+    error_occurred: "Bir hata oluştu."
+    user_not_found: "Kullanıcı bulunamadı."
+  placeholders:
+    search_user: "Kullanıcı Ara"
