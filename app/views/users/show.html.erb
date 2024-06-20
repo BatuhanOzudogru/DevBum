@@ -25,14 +25,14 @@
   <div class="w-2/3 pl-8">
     <h2 class="text-lg font-semibold mb-2"><%= t('headings.albums') %></h2>
     <ul class="space-y-2">
-    <% @albums.each do |album| %>
-      <% photo_response = HTTParty.get("https://jsonplaceholder.typicode.com/photos/#{album['id']}") %>
-      <% photo_data = JSON.parse(photo_response.body) %>
-      <li class="flex items-center space-x-4">
-        <img src="<%= photo_data['thumbnailUrl'] %>" alt="<%= album['title'] %>" class="w-16 h-16 rounded-full">
-        <a href="#" class="album-link text-blue-500 hover:underline" data-album-id="<%= album['id'] %>"><%= album['title'] %></a>
-      </li>
-    <% end %>
+      <% @albums.each do |album| %>
+        <% photo_response = HTTParty.get("https://jsonplaceholder.typicode.com/photos/#{album['id']}") %>
+        <% photo_data = JSON.parse(photo_response.body) %>
+        <li class="flex items-center space-x-4">
+          <img src="<%= photo_data['thumbnailUrl'] %>" alt="<%= album['title'] %>" class="w-16 h-16 rounded-full">
+          <a href="#" class="album-link text-blue-500 hover:underline" data-album-id="<%= album['id'] %>"><%= album['title'] %></a>
+        </li>
+      <% end %>
     </ul>
   </div>
 </div>
@@ -46,46 +46,65 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById('albumModal');
-    const span = document.querySelector('.close');
+document.addEventListener('DOMContentLoaded', function() {
+  const modal = document.getElementById('albumModal');
+  const span = document.querySelector('.close');
 
-    document.querySelectorAll('.album-link').forEach(function(link) {
-      link.addEventListener('click', function(event) {
-        event.preventDefault();
-        const albumId = this.getAttribute('data-album-id');
-
-        fetch(`/users/<%= @user.id %>/album_details/${albumId}`)
-          .then(response => response.json())
-          .then(data => {
-            if (data.error) {
-              document.getElementById('album-details').innerHTML = `<p>${data.error}</p>`;
-            } else {
-              document.getElementById('album-details').innerHTML = `
-                <h3 class="text-xl font-semibold mb-2">${data.title}</h3>
-                <p><strong>${t('labels.album_id')}:</strong> ${data.id}</p>
-                <p><strong>${t('labels.url')}:</strong> <a href="${data.url}" target="_blank" class="text-blue-500">${data.url}</a></p>
-                <img src="${data.thumbnailUrl}" alt="${data.title}" class="mt-2">
-              `;
-            }
-            modal.classList.remove('hidden'); 
-          })
-          .catch(error => {
-            console.error('Error:', error);
-            document.getElementById('album-details').innerHTML = '<p>${t('messages.error_occurred')}</p>';
-            modal.classList.remove('hidden'); 
-          });
+  function loadAlbumDetails(albumId) {
+    fetch(`/users/<%= @user.id %>/album_details/${albumId}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          document.getElementById('album-details').innerHTML = `<p>${data.error}</p>`;
+        } else {
+          document.getElementById('album-details').innerHTML = `
+            <h3 class="text-xl font-semibold mb-2">${data.title}</h3>
+            <p><strong>Album ID:</strong> ${data.id}</p>
+            <p><strong>URL:</strong> <a href="${data.url}" target="_blank" class="text-blue-500">${data.url}</a></p>
+            <img src="${data.thumbnailUrl}" alt="${data.title}" class="mt-2">
+          `;
+        }
+        modal.classList.remove('hidden');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('album-details').innerHTML = '<p>Bir hata oluştu.</p>';
+        modal.classList.remove('hidden');
       });
+  }
+
+  document.querySelectorAll('.album-link').forEach(function(link) {
+    link.addEventListener('click', function(event) {
+      event.preventDefault();
+      const albumId = this.getAttribute('data-album-id');
+      const newUrl = window.location.href.split('?')[0];
+      history.replaceState(null, '', newUrl);
+
+      loadAlbumDetails(albumId);
     });
-
-    span.onclick = function() {
-      modal.classList.add('hidden'); 
-    };
-
-    window.onclick = function(event) {
-      if (event.target === modal) {
-        modal.classList.add('hidden'); 
-      }
-    };
   });
+
+  span.onclick = function() {
+    modal.classList.add('hidden'); 
+  };
+
+  window.onclick = function(event) {
+    if (event.target === modal) {
+      modal.classList.add('hidden'); 
+    }
+  };
+
+  function getBaseUrl() {
+    return window.location.href.split('?')[0];
+  }
+
+  let currentUrl = getBaseUrl();
+  setInterval(function() {
+    const newUrl = getBaseUrl();
+    if (newUrl !== currentUrl && !newUrl.includes('?locale=')) {
+      currentUrl = newUrl;
+      modal.classList.add('hidden');
+    }
+  }, 500);
+});
 </script>
